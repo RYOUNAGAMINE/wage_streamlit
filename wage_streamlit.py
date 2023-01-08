@@ -91,3 +91,34 @@ fig = px.scatter(df_mean_bubble,
                 )
 
 st.plotly_chart(fig)
+
+year_list = df_jp_category["集計年"].unique()
+
+option_year = st.selectbox(
+  '集計年',
+  (year_list)
+)
+
+wage_list = ['一人当たり賃金（万円）', '所定内給与額（万円）', '年間賞与その他特別給与額（万円）']
+option_wage = st.selectbox(
+  '賃金の種類',
+  (wage_list)
+)
+
+df_mean_categ = df_jp_category[df_jp_category["集計年"] == option_year]
+
+max_x =df_mean_categ[option_wage].max() + 50
+
+fig = px.bar(
+  df_mean_categ,
+  x=option_wage,
+  y="産業大分類名",
+  color="産業大分類名",
+  animation_frame="年齢",
+  range_x=[0,max_x],
+  orientation='h',
+  width=800,
+  height=500
+)
+
+st.plotly_chart(fig)
